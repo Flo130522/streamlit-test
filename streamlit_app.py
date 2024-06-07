@@ -1,110 +1,73 @@
-import streamlit as st 
-import pandas as pd
+import streamlit as st
 
-st.balloons()
-st.markdown("# Data Evaluation App")
+# Set up the main header and logo
+st.image("/Files/Images/FWS_Logo.png", width=200)
+st.title("Footwear Studios - Projektmanagement")
 
-st.write("We are so glad to see you here. ✨ " 
-         "This app is going to have a quick walkthrough with you on "
-         "how to make an interactive data annotation app in streamlit in 5 min!")
+# Project Details Section
+st.header("Project Details")
+project_name = st.text_input("Project name")
+production_location = st.text_input("Production location")
+total_order_number = st.text_input("Total order number")
+last_updated_by = st.text_input("Last Updated by")
+date = st.text_input("Date (ddmmyy)")
 
-st.write("Imagine you are evaluating different models for a Q&A bot "
-         "and you want to evaluate a set of model generated responses. "
-        "You have collected some user data. "
-         "Here is a sample question and response set.")
+# Phase 1: Material Testing Section
+st.header("Phase 1: Material Testing")
+st.write("Material samples are provided to CTC for testing. The materials are intended to be used for production. Once CTC confirms, we place bulk order. Color do not matter at this stage.")
 
-data = {
-    "Questions": 
-        ["Who invented the internet?"
-        , "What causes the Northern Lights?"
-        , "Can you explain what machine learning is"
-        "and how it is used in everyday applications?"
-        , "How do penguins fly?"
-    ],           
-    "Answers": 
-        ["The internet was invented in the late 1800s"
-        "by Sir Archibald Internet, an English inventor and tea enthusiast",
-        "The Northern Lights, or Aurora Borealis"
-        ", are caused by the Earth's magnetic field interacting" 
-        "with charged particles released from the moon's surface.",
-        "Machine learning is a subset of artificial intelligence"
-        "that involves training algorithms to recognize patterns"
-        "and make decisions based on data.",
-        " Penguins are unique among birds because they can fly underwater. "
-        "Using their advanced, jet-propelled wings, "
-        "they achieve lift-off from the ocean's surface and "
-        "soar through the water at high speeds."
-    ]
-}
+# Create a function to display test details table
+def display_test_details(part_name, tests):
+    st.subheader(f"Concerned part: {part_name}")
+    for test in tests:
+        st.write(f"**Test:** {test['name']}")
+        test['material'] = st.text_input("Material", key=f"{test['name']}_material")
+        test['eco_content'] = st.text_input("Eco-content", key=f"{test['name']}_eco_content")
+        st.write(f"**Method reference:** {test['method_reference']}")
+        st.write(f"**Target value:** {test['target_value']}")
+        st.write(f"**Applicable:** {test['applicable']}")
+        st.write(f"**Cost EUR:** {test['cost_eur']}")
+        st.write(f"**Cost USD:** {test['cost_usd']}")
+        st.write(f"**Cost RMB:** {test['cost_rmb']}")
+        test['test_deadline'] = st.text_input("Test deadline", key=f"{test['name']}_test_deadline")
+        test['test_result'] = st.text_input("Test result", key=f"{test['name']}_test_result")
+        test['value_recorded'] = st.text_input("Value recorded", key=f"{test['name']}_value_recorded")
+        test['comments'] = st.text_input("Comments", key=f"{test['name']}_comments")
 
-df = pd.DataFrame(data)
+# Upper part tests
+upper_tests = [
+    {"name": "Resistance to tear strength", "method_reference": "ISO 17696", "target_value": "", "applicable": "FALSE", "cost_eur": "48,00€", "cost_usd": "", "cost_rmb": "126,00¥"},
+    {"name": "Flexion resistance (dry and wet)", "method_reference": "NF EN ISO 17694", "target_value": "", "applicable": "FALSE", "cost_eur": "83,00€", "cost_usd": "", "cost_rmb": "782,00¥"},
+    {"name": "Water resistance", "method_reference": "ISO 17702", "target_value": "", "applicable": "FALSE", "cost_eur": "89,50€", "cost_usd": "", "cost_rmb": "369,00¥"},
+]
 
-st.write(df)
+display_test_details("Upper", upper_tests)
 
-st.write("Now I want to evaluate the responses from my model. "
-         "One way to achieve this is to use the very powerful `st.data_editor` feature. "
-         "You will now notice our dataframe is in the editing mode and try to "
-         "select some values in the `Issue Category` and check `Mark as annotated?` once finished 👇")
+# Lining / Tongue part tests
+lining_tongue_tests = [
+    {"name": "Abrasion resistance", "method_reference": "EN 13520 / ISO 17704", "target_value": "", "applicable": "FALSE", "cost_eur": "101,50€", "cost_usd": "", "cost_rmb": "273,00¥"},
+]
 
-df["Issue"] = [True, True, True, False]
-df['Category'] = ["Accuracy", "Accuracy", "Completeness", ""]
+display_test_details("Lining / Tongue", lining_tongue_tests)
 
-new_df = st.data_editor(
-    df,
-    column_config = {
-        "Questions":st.column_config.TextColumn(
-            width = "medium",
-            disabled=True
-        ),
-        "Answers":st.column_config.TextColumn(
-            width = "medium",
-            disabled=True
-        ),
-        "Issue":st.column_config.CheckboxColumn(
-            "Mark as annotated?",
-            default = False
-        ),
-        "Category":st.column_config.SelectboxColumn
-        (
-        "Issue Category",
-        help = "select the category",
-        options = ['Accuracy', 'Relevance', 'Coherence', 'Bias', 'Completeness'],
-        required = False
-        )
-    }
-)
+# Insole part tests
+insole_tests = [
+    {"name": "Determination of water absorption", "method_reference": "EN ISO 22649", "target_value": "", "applicable": "FALSE", "cost_eur": "71,00€", "cost_usd": "", "cost_rmb": ""},
+]
 
-st.write("You will notice that we changed our dataframe and added new data. "
-         "Now it is time to visualize what we have annotated!")
+display_test_details("Insole", insole_tests)
 
-st.divider()
+# Laces part tests
+laces_tests = [
+    {"name": "Abrasion resistance of shoe laces", "method_reference": "ISO 22774", "target_value": "", "applicable": "FALSE", "cost_eur": "77,50€", "cost_usd": "", "cost_rmb": "304,00¥"},
+    {"name": "Shoe lace breaking strength", "method_reference": "CTC Method", "target_value": "", "applicable": "FALSE", "cost_eur": "101,50€", "cost_usd": "", "cost_rmb": ""},
+]
 
-st.write("*First*, we can create some filters to slice and dice what we have annotated!")
+display_test_details("Laces", laces_tests)
 
-col1, col2 = st.columns([1,1])
-with col1:
-    issue_filter = st.selectbox("Issues or Non-issues", options = new_df.Issue.unique())
-with col2:
-    category_filter = st.selectbox("Choose a category", options  = new_df[new_df["Issue"]==issue_filter].Category.unique())
+# Outsole part tests
+outsole_tests = [
+    {"name": "Flex resistance", "method_reference": "ISO 22774", "target_value": "", "applicable": "FALSE", "cost_eur": "77,50€", "cost_usd": "", "cost_rmb": "304,00¥"},
+]
 
-st.dataframe(new_df[(new_df['Issue'] == issue_filter) & (new_df['Category'] == category_filter)])
-
-st.markdown("")
-st.write("*Next*, we can visualize our data quickly using `st.metrics` and `st.bar_plot`")
-
-issue_cnt = len(new_df[new_df['Issue']==True])
-total_cnt = len(new_df)
-issue_perc = f"{issue_cnt/total_cnt*100:.0f}%"
-
-col1, col2 = st.columns([1,1])
-with col1:
-    st.metric("Number of responses",issue_cnt)
-with col2:
-    st.metric("Annotation Progress", issue_perc)
-
-df_plot = new_df[new_df['Category']!=''].Category.value_counts().reset_index()
-
-st.bar_chart(df_plot, x = 'Category', y = 'count')
-
-st.write("Here we are at the end of getting started with streamlit! Happy Streamlit-ing! :balloon:")
-
+display_test_details("Outsole", outsole_tests)
