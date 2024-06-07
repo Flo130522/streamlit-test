@@ -23,7 +23,7 @@ def display_test_details(part_name, tests):
         test['material'] = st.text_input("Material", key=f"{test['name']}_material")
         test['eco_content'] = st.text_input("Eco-content", key=f"{test['name']}_eco_content")
         st.write(f"**Method reference:** {test['method_reference']}")
-        st.write(f"**Target value:** {test['target_value']}")
+        st.write(f"**Target value123:** {test['target_value']}")
         st.write(f"**Applicable:** {test['applicable']}")
         st.write(f"**Cost EUR:** {test['cost_eur']}")
         st.write(f"**Cost USD:** {test['cost_usd']}")
