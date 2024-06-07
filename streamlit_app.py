@@ -1,7 +1,6 @@
 import streamlit as st
 
 # Set up the main header and logo
-st.image("/Files/Images/FWS_Logo.png", width=200)
 st.title("Footwear Studios - Projektmanagement")
 
 # Project Details Section
